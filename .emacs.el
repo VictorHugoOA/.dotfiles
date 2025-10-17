@@ -211,7 +211,16 @@
   ('marginalia-mode-hook . 'nerd-icons-completion-marginalia-setup))
 
 (use-package consult
-  :hook (completing-read))
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  (setq register-preview-delay 0.5
+	register-preview-function #'consult-register-format)
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq xref-show-xrefs-function #'consult-xref
+	xref-show-definitions-function #'consult-xref))
+
+
+
 
 (add-hook 'emacs-startup-hook #'StartupTime)
 (add-hook 'compilation-mode-hook 'CompilationHook)
